@@ -27,10 +27,11 @@ data = puzzle.input_data.replace(' ','').split(',')
 #   Part 1
 ######################################################################
 
-# calculate distance from origin to building
-def calculate_distance_to_building(data) -> int:
+# gets coordinates to building (part 1 relevant)
+def get_coordinates_to_building(data) -> List:
     player_pos = [0,0] #coordination that we'll use
     state = north
+    positions = []
 
     for i in range(len(data)):
         pos = data[i]
@@ -70,9 +71,9 @@ def calculate_distance_to_building(data) -> int:
             else:
                 player_pos[1] -= val
                 state = south
-    
+        positions.append(list(player_pos))
 
-    return abs(player_pos[0]) + abs(player_pos[1])
+    return positions
 
 
 # puzzle.answer_a = 
@@ -81,6 +82,79 @@ def calculate_distance_to_building(data) -> int:
 ######################################################################
 #   Part 2
 ######################################################################
+def calculate_abs_twice_visited(data) -> int:
+    player_pos = [0,0] #coordination that we'll use
+    state = north
+    positions = []
+
+    for i in range(len(data)):
+        pos = data[i] # entry
+        val = int(pos[1:]) # actual number
+        
+        # nach R oder L
+        if state == north:
+            x = player_pos[0]
+            # nach osten oder westen
+            if pos[0] == 'R':
+                # this loop adds every coordinate to list from current x to next x + val
+                for i in range(x, x + val):
+                    player_pos[0]+=1
+                    positions.append(list(player_pos))
+                state = east
+            else:
+                for i in range(x, x - val, -1):
+                    player_pos[0]-=1
+                    positions.append(list(player_pos))
+                state = west
+
+        elif state == east:
+            y = player_pos[1]
+            # nach süden oder norden
+            if pos[0] == 'R':
+                # this loop adds every coordinate to list from current y to next y - val
+                for i in range(y, y - val, -1):
+                    player_pos[1]-=1
+                    positions.append(list(player_pos))
+                state = south
+            else:
+                for i in range(y, y + val):
+                    player_pos[1]+=1
+                    positions.append(list(player_pos))
+                state = north
+
+        elif state == south:
+            x = player_pos[0]
+            # nach westen oder osten
+            if pos[0] == 'R':
+                for i in range(x, x - val, -1):
+                    player_pos[0]-=1
+                    positions.append(list(player_pos))
+                state = west
+            else:
+                for i in range(x, x + val):
+                    player_pos[0]+=1
+                    positions.append(list(player_pos))
+                state = east
+        elif state == west: 
+            y = player_pos[1]
+            # nach norden oder süden
+            if pos[0] == 'R':
+                for i in range(y, y + val):
+                    player_pos[1]+=1
+                    positions.append(list(player_pos))
+                state = north
+            else:
+                for i in range(y, y - val, -1):
+                    player_pos[1]-=1
+                    positions.append(list(player_pos))
+                state = south
+    # tuplize inner list pair so that we can count them
+    for i in range(len(positions)):
+        positions[i] = tuple(positions[i])
+    
+    # return the manhattan distance of the first entry, cause that is what we're looking for
+    res = [k for k, v in Counter(positions).items() if v > 1]
+    return abs(res[0][0]) + abs(res[0][1])
 
 
 # puzzle.answer_b = 
