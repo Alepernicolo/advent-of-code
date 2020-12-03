@@ -20,6 +20,7 @@ def calc_tree_count(right_direction, down_direction):
     tree_count = 0
     right = 0
 
+# Could have done better with modulo. take the index j and module it by the width of the row and you'll get the right index.
     i = 0
     while i < len(data):
         j = right
