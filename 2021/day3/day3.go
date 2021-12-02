@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	puzzleInput := aocHelper.GetPuzzleInput(2)
+	puzzleInput := aocHelper.GetPuzzleInput(3)
 	splitInput := strings.Split(puzzleInput, "\n")
 	fmt.Print(splitInput)
 }
