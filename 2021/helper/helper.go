@@ -9,7 +9,7 @@ import (
 
 func GetPuzzleInput(day int) string {
 	client := http.DefaultClient
-	url := fmt.Sprintf("https://adventofcode.com/2021/day/%d/input", day)
+	url := fmt.Sprintf("https://adventofcode.com/2022/day/%d/input", day)
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {

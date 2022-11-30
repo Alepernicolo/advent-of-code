@@ -1,3 +1,5 @@
 #Folders
 venv/
 .vscode/
+.idea/
+pkg/
